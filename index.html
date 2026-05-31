@@ -46,7 +46,7 @@ header { background: var(--surface); border-bottom: 1px solid var(--border); pad
 .search-item:last-child { border-bottom: none; }
 .search-item strong { color: var(--accent); }
 
-.stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+.stats-row { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
 .stat { background: var(--bg); border-radius: var(--radius-sm); padding: 7px 4px; text-align: center; }
 .stat-n { font-size: 17px; font-weight: 500; color: var(--text); line-height: 1; }
 .stat-l { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
@@ -73,10 +73,12 @@ header { background: var(--surface); border-bottom: 1px solid var(--border); pad
 .mesa-meta { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
 .mesa-count { font-size: 11px; color: var(--text-muted); white-space: nowrap; }
 .mesa-badges { display: flex; gap: 3px; }
-.mbadge { font-size: 10px; padding: 2px 5px; border-radius: 10px; font-weight: 500; }
+.mbadge { font-size: 11px; padding: 4px 10px; border-radius: 20px; font-weight: 500; display: flex; flex-direction: column; align-items: center; line-height: 1.2; }
 .mbadge-a { background: var(--blue-light); color: var(--blue); }
 .mbadge-c { background: var(--green-light); color: var(--green); }
 .mbadge-b { background: var(--amber-light); color: var(--amber); }
+.mbadge-num { font-size: 15px; font-weight: 500; line-height: 1; }
+.mbadge-lbl { font-size: 9px; opacity: 0.75; margin-top: 1px; }
 .mesa-actions { display: flex; gap: 4px; }
 .mesa-btn { width: 26px; height: 26px; border-radius: 50%; border: none; background: none; color: var(--text-muted); font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
 .mesa-btn:active { background: var(--border); }
@@ -195,6 +197,9 @@ header { background: var(--surface); border-bottom: 1px solid var(--border); pad
     <div class="stat"><div class="stat-n" id="s-sentados">0</div><div class="stat-l">sentados</div></div>
     <div class="stat"><div class="stat-n" id="s-mesas">0</div><div class="stat-l">mesas</div></div>
     <div class="stat warn"><div class="stat-n" id="s-livres">0</div><div class="stat-l">por sentar</div></div>
+    <div class="stat" style="background:var(--blue-light)"><div class="stat-n" id="s-adultos" style="color:var(--blue)">0</div><div class="stat-l" style="color:var(--blue)">adultos</div></div>
+    <div class="stat" style="background:var(--green-light)"><div class="stat-n" id="s-criancas" style="color:var(--green)">0</div><div class="stat-l" style="color:var(--green)">crianças</div></div>
+    <div class="stat" style="background:var(--amber-light)"><div class="stat-n" id="s-bebes" style="color:var(--amber)">0</div><div class="stat-l" style="color:var(--amber)">bebés</div></div>
   </div>
 </header>
 
@@ -312,7 +317,7 @@ const BASE_GUESTS = [
   {id:30,name:"Tia São",cat:"a"},{id:31,name:"Tia Maximina Pai",cat:"a"},{id:32,name:"Sr. Francisco",cat:"a"},
   {id:33,name:"Tia Bela",cat:"a"},{id:34,name:"Tio Manel (2)",cat:"a"},{id:35,name:"Pedro",cat:"a"},
   {id:36,name:"Katy",cat:"a"},{id:37,name:"Rafaela",cat:"a"},{id:38,name:"Cláudio",cat:"a"},
-  {id:39,name:"Duda",cat:"a"},{id:40,name:"Lino",cat:"a"},{id:41,name:"Tio João",cat:"a"},
+  {id:39,name:"Duda",cat:"a"},{id:40,name:"Lino",cat:"a"},
   {id:42,name:"Tio David (1)",cat:"a"},{id:43,name:"Dora",cat:"a"},{id:44,name:"Lalo",cat:"a"},
   {id:45,name:"Tia Rosa",cat:"a"},{id:46,name:"Ricardo",cat:"a"},{id:47,name:"Gena",cat:"a"},
   {id:48,name:"Monica",cat:"a"},{id:49,name:"Orlando",cat:"a"},{id:50,name:"Tia Maximina",cat:"a"},
@@ -326,14 +331,13 @@ const BASE_GUESTS = [
   {id:72,name:"Mariline",cat:"a"},{id:73,name:"Mia",cat:"a"},{id:74,name:"Moutinho",cat:"a"},
   {id:75,name:"Beta Abadia",cat:"a"},{id:76,name:"Toni (Família)",cat:"a"},{id:77,name:"Sónia",cat:"a"},
   {id:78,name:"Carolina",cat:"b"},{id:79,name:"Mãe Paula",cat:"a"},{id:80,name:"Alisson",cat:"a"},
-  {id:81,name:"Castro",cat:"a"},{id:82,name:"Pai Eduardo",cat:"a"},{id:83,name:"Avô Mingos",cat:"a"},
-  {id:84,name:"Flora",cat:"a"}
+  {id:81,name:"Castro",cat:"a"},{id:82,name:"Pai Eduardo",cat:"a"},{id:83,name:"Avô Mingos",cat:"a"}
 ];
 
 const BASE_MESAS = [
   {id:'m1',nome:'Mesa 1 — Crianças'},{id:'m2',nome:'Mesa 2- adolescentes'},{id:'m4',nome:'Mesa 4- família pai'},
   {id:'m5',nome:'Mesa 5-figueiredo'},{id:'m6',nome:'Mesa 6- carrazedo'},{id:'m7',nome:'Mesa 7- família mae'},
-  {id:'m8',nome:'Mesa 8- amigos'},{id:'m9',nome:'Mesa 9'}
+  {id:'m8',nome:'Mesa 8- amigos'}
 ];
 
 // Mesa 1: Amélia Tróia(0), Alice(1), Martim(2), Camila(3), Clara(4), Bia(5), Maria(6), Dinis(7), Mateus(8), Kiko(9), Duarte Amigos(10), Eduardo Filho Isa(11), Rita Filha Isa(12)
@@ -343,16 +347,15 @@ const BASE_MESAS = [
 // Mesa 6: Tio David 1(42), Dora(43), Lalo(44), Tia Rosa(45), Ricardo(46), Gena(47), Monica(48), Orlando(49), Tia Maximina(50), Tio David 2(51)
 // Mesa 7: Quim(52), Pedro Padrinho(53), Sílvia(54), Paulo(55), Patrícia(56), Tia Lucinda França(57), Tia Lucinda(58), Tio Fernando(59), Toni Família(76), Sónia(77), Carolina(78), Avô Mingos(83), Mãe Paula(79)
 // Mesa 8: Celine(60), Nogas(61), Lena(62), Artur(63), Isa(64), Rui(65), Liliana(66), Miguel(67), Dave(68), Eduarda(69), Célia Madrinha(70), Tony(71), Mariline(72), Mia(73), Moutinho(74), Beta Abadia(75)
-// Por sentar: Alisson(80), Castro(81), Pai Eduardo(82), Flora(84)
+// Por sentar: nenhum — todos sentados
 const BASE_ASSIGNMENTS = {
   m1:[0,1,2,3,4,5,6,7,8,9,10,11,12],
   m2:[13,14,15,16,17,18,19,20,21,22],
   m4:[23,24,25,26,27,28,29,30,31,32],
-  m5:[33,34,35,36,37,38,39,40,41],
+  m5:[33,34,35,36,37,38,39,40,80,81,82],
   m6:[42,43,44,45,46,47,48,49,50,51],
   m7:[52,53,54,55,56,57,58,59,76,77,78,83,79],
-  m8:[60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75],
-  m9:[]
+  m8:[60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75]
 };
 
 // ─── STATE ────────────────────────────────────────────────────────────────────
@@ -380,9 +383,9 @@ function getMesaBadges(mid) {
   const c = gs.filter(g=>g.cat==='c').length;
   const b = gs.filter(g=>g.cat==='b').length;
   let html = '';
-  if(a) html += `<span class="mbadge mbadge-a">${a}A</span>`;
-  if(c) html += `<span class="mbadge mbadge-c">${c}C</span>`;
-  if(b) html += `<span class="mbadge mbadge-b">${b}B</span>`;
+  if(a) html += `<span class="mbadge mbadge-a"><span class="mbadge-num">${a}</span><span class="mbadge-lbl">adultos</span></span>`;
+  if(c) html += `<span class="mbadge mbadge-c"><span class="mbadge-num">${c}</span><span class="mbadge-lbl">crianças</span></span>`;
+  if(b) html += `<span class="mbadge mbadge-b"><span class="mbadge-num">${b}</span><span class="mbadge-lbl">bebés</span></span>`;
   return html;
 }
 
@@ -395,6 +398,9 @@ function updateStats() {
   document.getElementById('s-sentados').textContent = assigned;
   document.getElementById('s-mesas').textContent = mesas.length;
   document.getElementById('s-livres').textContent = free;
+  document.getElementById('s-adultos').textContent = guests.filter(g=>g.cat==='a').length;
+  document.getElementById('s-criancas').textContent = guests.filter(g=>g.cat==='c').length;
+  document.getElementById('s-bebes').textContent = guests.filter(g=>g.cat==='b').length;
   const banner = document.getElementById('banner');
   if(free > 0) {
     const names = guests.filter(g=>!getAssigned().has(g.id)).map(g=>g.name).join(', ');
@@ -415,10 +421,12 @@ function renderMesas() {
     return `<div class="mesa-card" id="mc-${m.id}" ondragover="mesaDragOver(event,'${m.id}')" ondragleave="mesaDragLeave('${m.id}')" ondrop="mesaDrop(event,'${m.id}')">
       <div class="mesa-head">
         <div class="mesa-num" draggable="true" ondragstart="mesaOrderDrag(event,'${m.id}')" title="Arrastar para reordenar">${i+1}</div>
-        <input class="mesa-name" value="${m.nome}" onchange="renameMesa('${m.id}',this.value)">
-        <div class="mesa-meta">
-          <div class="mesa-badges">${getMesaBadges(m.id)}</div>
-          <span class="mesa-count">${gs.length} pax</span>
+        <div style="flex:1;min-width:0;">
+          <input class="mesa-name" value="${m.nome}" onchange="renameMesa('${m.id}',this.value)">
+          <div style="display:flex;align-items:center;gap:6px;margin-top:5px;flex-wrap:wrap;">
+            <div class="mesa-badges">${getMesaBadges(m.id)}</div>
+            <span class="mesa-count" style="font-size:10px;">${gs.length} total</span>
+          </div>
         </div>
         <div class="mesa-actions">
           <button class="mesa-btn" onclick="duplicateMesa('${m.id}')" title="Duplicar">⧉</button>
@@ -628,10 +636,16 @@ function openRemoveFromMesa(gid, mid) {
   const g = guests.find(x=>x.id===gid);
   const m = mesas.find(x=>x.id===mid);
   openModal(g.name, m.nome, `
-    <button class="modal-btn" onclick="moveGuest(${gid},'${mid}')">Mudar de mesa</button>
+    <button class="modal-btn" onclick="openEditGuestFromMesa(${gid},'${mid}')">✎ Editar convidado</button>
+    <button class="modal-btn" style="margin-top:8px;background:var(--bg);color:var(--text);border:1px solid var(--border)" onclick="moveGuest(${gid},'${mid}')">Mudar de mesa</button>
     <div class="modal-section" style="margin-top:12px">Remover da mesa</div>
     <button class="modal-btn danger" onclick="removeFromMesa(${gid},'${mid}')" style="margin-top:4px">Remover de ${m.nome}</button>
   `);
+}
+
+function openEditGuestFromMesa(gid, mid) {
+  closeModal();
+  openEditGuest(gid);
 }
 
 function removeFromMesa(gid, mid) {
